@@ -9,7 +9,7 @@ export default function FeaturedBooks() {
 		(async () => {
 			try {
 				setLoading(true);
-				const response = await api.get("api/v1/books/featured");
+				const response = await api.get("/api/v1/books/featured");
 				setBooks(response.data);
 			} catch (error) {
 				console.error("Error fetching featured books:", error);

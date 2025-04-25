@@ -11,6 +11,7 @@ import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "./page/Home";
+import AdminHome from "./page/Admin/AdminHome";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -20,7 +21,12 @@ const router = createBrowserRouter(
 			<Route path="sign-in" element={<SignIn />} />
 			<Route path="sign-up" element={<SignUp />} />
 
-			<Route path="app" element={<ProtectedRoute />}></Route>
+			<Route path="app" element={<ProtectedRoute access="USER" />}></Route>
+
+			<Route path="admin" element={<ProtectedRoute access="ADMIN" />}>
+				<Route index element={<AdminHome />} />
+			</Route>
+
 			<Route path="*" element={<Navigate to="/" />} />
 		</Route>,
 	),
