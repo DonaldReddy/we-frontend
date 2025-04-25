@@ -3,17 +3,25 @@ import {
 	RouterProvider,
 	Route,
 	createRoutesFromElements,
+	Navigate,
 } from "react-router-dom";
 import Layout from "./Layout";
 import ReduxProvider from "./redux/ReduxProvider";
 import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
+import ProtectedRoute from "./ProtectedRoute";
+import Home from "./page/Home";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<Layout />}>
+			<Route index element={<Home />} />
+
 			<Route path="sign-in" element={<SignIn />} />
 			<Route path="sign-up" element={<SignUp />} />
+
+			<Route path="app" element={<ProtectedRoute />}></Route>
+			<Route path="*" element={<Navigate to="/" />} />
 		</Route>,
 	),
 );

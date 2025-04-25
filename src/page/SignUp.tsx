@@ -1,10 +1,10 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { useAppDispatch } from "../redux/store";
 import { authActions } from "../redux/slices/authSlice";
+import React from "react";
 
-export default function SignIn() {
+export default function SignUp() {
 	const [userInfo, setUserInfo] = React.useState({
 		email: "",
 		password: "",
@@ -62,8 +62,8 @@ export default function SignIn() {
 			}
 			console.log(userInfo);
 
-			await api.post("/api/v1/auth/sign-up", userInfo);
-			dispatch(authActions.login());
+			const response = await api.post("/api/v1/auth/sign-up", userInfo);
+			dispatch(authActions.login(response.data.user));
 			router("/");
 		} catch (error) {
 			// TODO add tostify error message

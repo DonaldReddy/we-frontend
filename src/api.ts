@@ -5,8 +5,6 @@ const api = axios.create({
 	withCredentials: true,
 });
 
-console.log(import.meta.env.VITE_API_BASE_URL);
-
 // api.interceptors.response.use(
 // 	(response) => response,
 // 	(error) => {

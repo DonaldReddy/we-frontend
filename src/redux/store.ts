@@ -17,7 +17,7 @@ const createNoopStorage = () => {
 			return Promise.resolve(null);
 		},
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		setItem(_key: string, value: string) {
+		setItem(_key: string, _value: string) {
 			return Promise.resolve();
 		},
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars

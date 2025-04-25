@@ -1,8 +1,8 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { useAppDispatch } from "../redux/store";
 import { authActions } from "../redux/slices/authSlice";
+import React from "react";
 
 export default function SignIn() {
 	const [userInfo, setUserInfo] = React.useState({
@@ -23,8 +23,9 @@ export default function SignIn() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
 			e.preventDefault();
-			await api.post("/api/v1/auth/sign-in", userInfo);
-			dispatch(authActions.login());
+			const response = await api.post("/api/v1/auth/sign-in", userInfo);
+
+			dispatch(authActions.login(response.data.user));
 			router("/");
 		} catch (error) {
 			// TODO add tostify error message
