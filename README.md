@@ -4,6 +4,12 @@
 
 # Backend Repository https://github.com/DonaldReddy/we-backend
 
+## Home
+![Main Screen](https://github.com/DonaldReddy/we-frontend/blob/main/src/assets/main-screen.png)
+
+## Books
+![Main Screen](https://github.com/DonaldReddy/we-frontend/blob/main/src/assets/book-screen.png)
+
 ## Setup
 
 1. Clone the repository:
