@@ -78,9 +78,9 @@ export default function BookPage() {
 								className="w-full md:w-1/4"
 							/>
 						)}
-						<div className="flex flex-col gap-2 w-3/4">
+						<div className="flex flex-col gap-2 md:w-3/4">
 							<div>
-								<h1 className="text-4xl ">{book.title}</h1>
+								<h1 className="text-2xl md:text-4xl ">{book.title}</h1>
 								<p className="text-sm my-2 ">
 									by:{" "}
 									<span className="underline underline-offset-4 text-blue-950">

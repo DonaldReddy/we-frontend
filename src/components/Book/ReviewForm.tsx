@@ -53,14 +53,14 @@ export default function ReviewForm({
 	};
 
 	return (
-		<div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 flex items-center justify-center z-50">
-			<div className="bg-white p-4 rounded-lg shadow-md w-3/4 sm:w-1/2 lg:w-2/3 h-3/4">
+		<div className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 flex items-center justify-center z-50 p-2">
+			<div className="bg-white p-4 rounded-lg shadow-md w-full lg:w-2/3 h-3/4">
 				<h2 className="text-xl mb-4">
 					Writing Review for <span className="font-bold">"{book.title}"</span>
 					by <span className="font-bold">{book.author}</span>
 				</h2>
 				<textarea
-					className="w-full  p-2 border rounded outline-none resize-none"
+					className="w-full p-2 border rounded outline-none resize-none"
 					placeholder="Your review... at least 30 words"
 					rows={10}
 					value={reviewInfo.aiComment || reviewInfo.comment}
@@ -124,7 +124,7 @@ export default function ReviewForm({
 							: "🤩"}
 					</p>
 				</div>
-				<div className="flex justify-end mt-4">
+				<div className="flex flex-wrap gap-3 justify-end mt-4">
 					{reviewInfo.comment.split(" ").length < 30 && (
 						<p className=" text-white py-2 px-4 rounded mr-2 animated-background bg-gradient-to-r from-blue-500 via-blue-400 to-indigo-500 ">
 							Write{" "}
@@ -155,31 +155,31 @@ export default function ReviewForm({
 						</button>
 					)}
 
-					{reviewInfo.aiComment && (
-						<button
-							className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer hover:bg-black hover:text-white"
-							onClick={() =>
-								setReviewInfo({
-									...reviewInfo,
-									comment: reviewInfo.aiComment,
-									aiComment: "",
-								})
-							}
-							disabled={isLoading || aiLoading}
-						>
-							Accept AI Changes
-						</button>
-					)}
+					{/* {reviewInfo.aiComment && (
+					)} */}
+					<button
+						className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer hover:bg-black hover:text-white"
+						onClick={() =>
+							setReviewInfo({
+								...reviewInfo,
+								comment: reviewInfo.aiComment,
+								aiComment: "",
+							})
+						}
+						disabled={isLoading || aiLoading}
+					>
+						Accept AI Changes
+					</button>
 
-					{reviewInfo.aiComment && (
-						<button
-							className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer  hover:bg-black hover:text-white"
-							onClick={() => setReviewInfo({ ...reviewInfo, aiComment: "" })}
-							disabled={isLoading || aiLoading}
-						>
-							Discard AI Changes
-						</button>
-					)}
+					{/* {reviewInfo.aiComment && (
+					)} */}
+					<button
+						className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer  hover:bg-black hover:text-white"
+						onClick={() => setReviewInfo({ ...reviewInfo, aiComment: "" })}
+						disabled={isLoading || aiLoading}
+					>
+						Discard AI Changes
+					</button>
 
 					<button
 						className="bg-red-600 text-white py-2 px-4 rounded mr-2 border cursor-pointer"

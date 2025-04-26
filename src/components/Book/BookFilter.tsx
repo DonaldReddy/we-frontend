@@ -36,7 +36,7 @@ export default function BookFilter() {
 	}, [search, sortBy, filter, page, limit]);
 
 	return (
-		<div className="w-full flex items-center justify-between bg-white/80 p-2 rounded-lg shadow-md text-black ">
+		<div className="hidden w-full md:flex items-center justify-between bg-white/80 p-2 rounded-lg shadow-md text-black ">
 			<div className="flex items-center gap-2">
 				<div className="flex items-center border-black/20 border rounded-lg px-2">
 					<label className="text-lg font-semibold" htmlFor="search">

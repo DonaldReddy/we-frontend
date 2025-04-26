@@ -34,8 +34,8 @@ export default function Profile() {
 	};
 
 	return (
-		<div className="min-h-dvh flex items-center justify-center">
-			<div className="w-3/4 md:w-2/4  bg-white/80 p-6 rounded-lg shadow-md text-black ">
+		<div className="h-[80dvh] md:min-h-dvh flex items-center justify-center">
+			<div className="w-full md:w-2/4  bg-white/80 p-6 rounded-lg shadow-md text-black ">
 				<h1 className="text-4xl font-bold mb-4">Profile</h1>
 				<hr className=" border-2" />
 				<br />

@@ -17,11 +17,11 @@ export default function FeaturedBooks() {
 	}, []);
 
 	return (
-		<div>
+		<div className="w-full  flex flex-col items-center">
 			<h2 className="text-3xl font-bold  mb-4 bg-gradient-to-r from-blue-500 to-10% to-pink-400 bg-clip-text text-transparent">
 				Featured Books
 			</h2>
-			<div className="flex flex-wrap gap-4 mt-4">
+			<div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-4">
 				{featuredBooks.map((book) => (
 					<BookCard
 						key={book.id}
