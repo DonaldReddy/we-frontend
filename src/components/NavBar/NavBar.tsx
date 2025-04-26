@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { RxExit } from "react-icons/rx";
 import { authActions } from "../../redux/slices/authSlice";

@@ -9,9 +9,6 @@ export default function EditBook({
 	author,
 	coverImage,
 	description,
-	rating,
-	ratingCount,
-	createdAt,
 	featured,
 	handleClose,
 }: Book & {
@@ -87,7 +84,7 @@ export default function EditBook({
 						...bookInfo,
 						coverImage: imageUrl,
 					};
-					const response = await api.put(`/api/v1/books/${id}`, bookData);
+					await api.put(`/api/v1/books/${id}`, bookData);
 				} else {
 					alert("Error uploading image. Please try again.");
 					return;
