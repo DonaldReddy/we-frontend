@@ -3,6 +3,8 @@ import { IoIosSearch } from "react-icons/io";
 import AddNewBook from "./AddNewBook";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import { adminActions } from "../../redux/slices/adminSlice";
 
 export default function BookFilter() {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +17,8 @@ export default function BookFilter() {
 	const [limit, setLimit] = useState(
 		parseInt(searchParams.get("limit")!) || 10,
 	);
+
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
@@ -132,7 +136,12 @@ export default function BookFilter() {
 			</div>
 			<div>
 				{showAddNewBook && (
-					<AddNewBook handleClose={() => setShowAddNewBook(false)} />
+					<AddNewBook
+						handleClose={() => {
+							dispatch(adminActions.fetchBooks());
+							setShowAddNewBook(false);
+						}}
+					/>
 				)}
 				<button
 					className=" text-black py-2 px-3 rounded-xl flex items-center gap-2 hover:bg-black/100 hover:text-white transition-all duration-200 cursor-pointer border border-black/40"

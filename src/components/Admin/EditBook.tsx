@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { api } from "../../api";
 import Loader from "../Loader";
+import { Book } from "../../types";
 
-export default function AddNewBook({
+export default function EditBook({
+	id,
+	title,
+	author,
+	coverImage,
+	description,
+	rating,
+	ratingCount,
+	createdAt,
+	featured,
 	handleClose,
-}: {
+}: Book & {
 	handleClose: () => void;
 }) {
 	const [bookInfo, setBookInfo] = useState({
-		title: "",
-		author: "",
-		description: "",
-		genre: "",
-		coverImage: null as File | null,
-		featured: "NO",
+		title: title || "",
+		author: author || "",
+		description: description || "",
+		coverImage: coverImage || (null as File | null),
+		featured: featured,
 	});
 
 	const [loading, setLoading] = useState(false);
@@ -67,18 +76,37 @@ export default function AddNewBook({
 		try {
 			e.preventDefault();
 			setLoading(true);
-			const coverImageUrl = await handleImageUpload();
-			if (coverImageUrl) {
+			if (bookInfo.coverImage instanceof File) {
+				const imageUrl = await handleImageUpload();
+				if (imageUrl) {
+					setBookInfo((prev) => ({
+						...prev,
+						coverImage: imageUrl,
+					}));
+					const bookData = {
+						...bookInfo,
+						coverImage: imageUrl,
+					};
+					const response = await api.put(`/api/v1/books/${id}`, bookData);
+				} else {
+					alert("Error uploading image. Please try again.");
+					return;
+				}
+			} else {
 				const bookData = {
 					...bookInfo,
-					coverImage: coverImageUrl,
 				};
-				await api.post("/api/v1/books", bookData);
+				const response = await api.put(`/api/v1/books/${id}`, bookData);
+				if (response.status === 200) {
+					alert("Book updated successfully!");
+				} else {
+					alert("Failed to update the book. Please try again.");
+				}
 			}
 		} catch (error) {
 		} finally {
-			handleClose();
 			setLoading(false);
+			handleClose();
 		}
 	};
 
@@ -86,9 +114,7 @@ export default function AddNewBook({
 		<div className="fixed top-0 left-0 h-screen w-screen bg-black/40 flex justify-center items-center">
 			<div className="bg-white w-3/4 h-4/5 rounded-lg shadow-md flex flex-col items-center  gap-4 p-4">
 				<div className="flex justify-between items-center w-full">
-					<h2 className="text-2xl underline underline-offset-5">
-						Add New Book
-					</h2>
+					<h2 className="text-2xl underline underline-offset-5">Update Book</h2>
 					<button
 						className="ml-auto text-xl cursor-pointer underline"
 						onClick={handleClose}
@@ -131,23 +157,10 @@ export default function AddNewBook({
 								name="description"
 								id="description"
 								placeholder="Enter book description..."
-								rows={4}
+								rows={9}
 								cols={50}
 								onChange={handleInputChange}
 								value={bookInfo.description}
-								required
-							/>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="genre">Genre</label>
-							<input
-								className="outline-none border border-black/20 focus:border-black/40  rounded-md p-1"
-								type="text"
-								name="genre"
-								placeholder="Enter genre separated by commas... action,adventure,etc."
-								id="genre"
-								onChange={handleInputChange}
-								value={bookInfo.genre}
 								required
 							/>
 						</div>
@@ -162,20 +175,27 @@ export default function AddNewBook({
 								accept="image/*"
 								id="coverImage"
 								onChange={handleInputChange}
-								required
+								required={!bookInfo.coverImage}
 							/>
 						</div>
 
-						{bookInfo.coverImage && (
+						{bookInfo.coverImage && bookInfo.coverImage instanceof File && (
 							<div className="flex flex-col gap-2">
 								<img
 									className="w-1/2 h-48 object-contain"
 									src={URL.createObjectURL(bookInfo.coverImage)}
 									alt="Book cover"
 								/>
-								<p className="text-sm text-gray-500">
-									{bookInfo.coverImage.name}
-								</p>
+							</div>
+						)}
+
+						{bookInfo.coverImage && typeof bookInfo.coverImage === "string" && (
+							<div className="flex flex-col gap-2">
+								<img
+									className="w-1/2 h-48 object-contain"
+									src={bookInfo.coverImage}
+									alt="Book cover"
+								/>
 							</div>
 						)}
 
@@ -196,7 +216,7 @@ export default function AddNewBook({
 						</div>
 						<div className="flex flex-col justify-center items-center w-full">
 							<button className="bg-black/80 text-white rounded-md p-2 cursor-pointer hover:bg-black/100 transition-all duration-200 flex justify-center w-full max-w-[250px] ">
-								{loading ? <Loader size={25} /> : "Add Book"}
+								{loading ? <Loader size={25} /> : "Update Book"}
 							</button>
 						</div>
 					</div>
