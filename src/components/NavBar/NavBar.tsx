@@ -3,6 +3,7 @@ import ThemeToggle from "./ThemeToggle";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { RxExit } from "react-icons/rx";
 import { authActions } from "../../redux/slices/authSlice";
+import { FaRegUserCircle } from "react-icons/fa";
 
 export default function NavBar() {
 	const location = useLocation();
@@ -56,13 +57,25 @@ export default function NavBar() {
 						</Link>
 					)}
 
-					<ThemeToggle />
+					{/* <ThemeToggle /> */}
 					{isAuthenticated && (
-						<RxExit
-							className="ml-2 text-black/60 hover:scale-105 hover:text-black/100 transition-all duration-200 cursor-pointer"
-							size={25}
-							onClick={handleLogout}
-						/>
+						<>
+							<Link
+								to={`/app/profile/${user.id}`}
+								className={linkClass(`/app/profile/${user.id}`)}
+							>
+								<FaRegUserCircle
+									className=" text-black/60 hover:scale-105 hover:text-black/100 transition-all duration-200 cursor-pointer"
+									size={25}
+								/>
+							</Link>
+
+							<RxExit
+								className="ml-2 text-black/60 hover:scale-105 hover:text-black/100 transition-all duration-200 cursor-pointer"
+								size={25}
+								onClick={handleLogout}
+							/>
+						</>
 					)}
 				</div>
 			</div>

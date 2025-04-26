@@ -3,6 +3,7 @@ import { api } from "../api";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { authActions } from "../redux/slices/authSlice";
 import React, { useEffect } from "react";
+import Loader from "../components/Loader";
 
 export default function SignUp() {
 	const [userInfo, setUserInfo] = React.useState({
@@ -16,6 +17,7 @@ export default function SignUp() {
 		password: "",
 		name: "",
 	});
+	const [loading, setLoading] = React.useState(false);
 
 	const router = useNavigate();
 	const dispatch = useAppDispatch();
@@ -66,7 +68,7 @@ export default function SignUp() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
 			e.preventDefault();
-			console.log(userInfo);
+			setLoading(true);
 			if (!validateForm()) {
 				return;
 			}
@@ -77,6 +79,8 @@ export default function SignUp() {
 			router("/");
 		} catch (error) {
 			// TODO add tostify error message
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -128,7 +132,8 @@ export default function SignUp() {
 							className="bg-black/80  hover:bg-black/100 text-white rounded p-2 w-full transition-all duration-400 cursor-pointer"
 							type="submit"
 						>
-							Sign Up
+							{loading && <Loader />}
+							{!loading && "Sign Up"}
 						</button>
 						<p className="text-sm text-gray-500">
 							Already have an account?{" "}

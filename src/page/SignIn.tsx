@@ -3,6 +3,7 @@ import { api } from "../api";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { authActions } from "../redux/slices/authSlice";
 import React, { useEffect } from "react";
+import Loader from "../components/Loader";
 
 export default function SignIn() {
 	const [userInfo, setUserInfo] = React.useState({
@@ -12,6 +13,7 @@ export default function SignIn() {
 	const router = useNavigate();
 	const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 	const dispatch = useAppDispatch();
+	const [loading, setLoading] = React.useState(false);
 
 	useEffect(() => {
 		if (isAuthenticated) {
@@ -34,12 +36,15 @@ export default function SignIn() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
 			e.preventDefault();
+			setLoading(true);
 			const response = await api.post("/api/v1/auth/sign-in", userInfo);
 
 			dispatch(authActions.login(response.data.user));
 			router("/");
 		} catch (error) {
 			// TODO add tostify error message
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -76,10 +81,12 @@ export default function SignIn() {
 							Forgot Password?
 						</button>
 						<button
-							className="bg-black/80  hover:bg-black/100 text-white rounded p-2 w-full transition-all duration-400 cursor-pointer"
+							className="bg-black/80  hover:bg-black/100 text-white rounded p-2 w-full transition-all duration-400 cursor-pointer flex justify-center items-center gap-2"
 							type="submit"
+							disabled={loading}
 						>
-							Sign In
+							{loading && <Loader />}
+							{!loading && "Sign In"}
 						</button>
 						<p className="text-sm text-gray-500">
 							Don't have an account?{" "}

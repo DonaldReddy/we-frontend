@@ -38,6 +38,9 @@ const authSlice = createSlice({
 				role: "USER",
 			};
 		},
+		updateUser: (state, user) => {
+			state.user = { ...state.user, ...user.payload };
+		},
 	},
 });
 
