@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Book } from "../../types";
 import { api } from "../../api";
 
-interface AdminState {
+interface UserBookState {
 	books: {
 		previousPage: number | null;
 		nextPage: number | null;
@@ -11,6 +11,7 @@ interface AdminState {
 		limit: number;
 		books: Book[];
 	};
+	featuredBooks: Book[];
 	isLoading: boolean;
 	error: string | null;
 }
@@ -26,10 +27,9 @@ const fetchBooks = createAsyncThunk<
 	},
 	void,
 	{ rejectValue: string }
->("admin/fetchBooks", async (_, { rejectWithValue }) => {
+>("userBook/fetchBooks", async (_, { rejectWithValue }) => {
 	try {
 		const searchParams = new URLSearchParams(window.location.search);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
 		const { data } = await api.get("/api/v1/books?" + searchParams.toString());
 		return data;
 	} catch (error) {
@@ -37,19 +37,20 @@ const fetchBooks = createAsyncThunk<
 	}
 });
 
-const deleteBook = createAsyncThunk<string, string, { rejectValue: string }>(
-	"admin/deleteBook",
-	async (id, { rejectWithValue }) => {
-		try {
-			const { data } = await api.delete(`/api/v1/books/${id}`);
-			return data.id;
-		} catch (error) {
-			return rejectWithValue("Error deleting book: " + error);
-		}
-	},
-);
+const fetchFeaturedBooks = createAsyncThunk<
+	Book[],
+	void,
+	{ rejectValue: string }
+>("userBook/fetchFeaturedBooks", async (_, { rejectWithValue }) => {
+	try {
+		const { data } = await api.get("/api/v1/books/featured");
+		return data.books;
+	} catch (error) {
+		return rejectWithValue("Error fetching featured books: " + error);
+	}
+});
 
-const initialState: AdminState = {
+const initialState: UserBookState = {
 	books: {
 		previousPage: null,
 		nextPage: null,
@@ -58,14 +59,21 @@ const initialState: AdminState = {
 		limit: 10,
 		books: [],
 	},
+	featuredBooks: [],
 	isLoading: false,
 	error: null,
 };
 
-const adminSlice = createSlice({
-	name: "admin",
+const userBookSlice = createSlice({
+	name: "userBook",
 	initialState,
-	reducers: {},
+	reducers: {
+		clearSlice: (state) => {
+			state = initialState;
+			state.isLoading = initialState.isLoading;
+			state.error = initialState.error;
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchBooks.pending, (state) => {
 			state.isLoading = true;
@@ -79,27 +87,25 @@ const adminSlice = createSlice({
 			state.isLoading = false;
 			state.error = action.payload as string;
 		});
-		builder.addCase(deleteBook.pending, (state) => {
+		builder.addCase(fetchFeaturedBooks.pending, (state) => {
 			state.isLoading = true;
 		});
-		builder.addCase(deleteBook.fulfilled, (state, action) => {
+		builder.addCase(fetchFeaturedBooks.fulfilled, (state, action) => {
+			state.featuredBooks = action.payload;
 			state.isLoading = false;
-			state.books.books = state.books.books.filter(
-				(book) => book.id !== action.payload,
-			);
 			state.error = null;
 		});
-		builder.addCase(deleteBook.rejected, (state, action) => {
+		builder.addCase(fetchFeaturedBooks.rejected, (state, action) => {
 			state.isLoading = false;
 			state.error = action.payload as string;
 		});
 	},
 });
 
-export const adminActions = {
+export const userBookActions = {
 	fetchBooks,
-	deleteBook,
-	...adminSlice.actions,
+	fetchFeaturedBooks,
+	...userBookSlice.actions,
 };
 
-export const adminReducer = adminSlice.reducer;
+export const userBookReducer = userBookSlice.reducer;

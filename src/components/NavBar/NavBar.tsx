@@ -32,6 +32,13 @@ export default function NavBar() {
 					<Link to="/" className={linkClass("/")}>
 						Home
 					</Link>
+
+					{isAuthenticated && (
+						<Link to="/app/books" className={linkClass("/app/books")}>
+							Books
+						</Link>
+					)}
+
 					{!isAuthenticated && (
 						<Link to="/sign-in" className={linkClass("/sign-in")}>
 							Sign In

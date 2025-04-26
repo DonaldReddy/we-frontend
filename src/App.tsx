@@ -12,6 +12,8 @@ import SignUp from "./page/SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "./page/Home";
 import AdminHome from "./page/Admin/AdminHome";
+import FindBooks from "./page/FindBooks";
+import Book from "./page/Book";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -21,7 +23,10 @@ const router = createBrowserRouter(
 			<Route path="sign-in" element={<SignIn />} />
 			<Route path="sign-up" element={<SignUp />} />
 
-			<Route path="app" element={<ProtectedRoute access="USER" />}></Route>
+			<Route path="app" element={<ProtectedRoute access="USER" />}>
+				<Route path="books/:id" element={<Book />} />
+				<Route path="books" element={<FindBooks />} />
+			</Route>
 
 			<Route path="admin" element={<ProtectedRoute access="ADMIN" />}>
 				<Route index element={<AdminHome />} />

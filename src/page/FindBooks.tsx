@@ -1,24 +1,24 @@
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import BookCard from "../../components/Book/BookCard";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import BookFilter from "../components/Book/BookFilter";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import BookCard from "../components/Book/BookCard";
+import BookSkeleton from "../components/Book/BookSkeleton";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import BookSkeleton from "../../components/Book/BookSkeleton";
-import { adminBookActions } from "../../redux/slices/adminBookSlice";
-import BookFilter from "../../components/Book/BookFilter";
+import { useEffect, useState } from "react";
+import { userBookActions } from "../redux/slices/userBookSlice";
+import { useSearchParams } from "react-router-dom";
 
-export default function AdminHome() {
+export default function FindBooks() {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const { isLoading } = useAppSelector((state) => state.adminBook);
+	const { isLoading } = useAppSelector((state) => state.userBook);
 	const { books, previousPage, nextPage, limit } = useAppSelector(
-		(state) => state.adminBook.books,
+		(state) => state.userBook.books,
 	);
 	const dispatch = useAppDispatch();
 	const [page, setPage] = useState(searchParams.get("page") || 1);
 
 	useEffect(() => {
 		const timeOut = setTimeout(() => {
-			dispatch(adminBookActions.fetchBooks());
+			dispatch(userBookActions.fetchBooks());
 		}, 500);
 		return () => clearTimeout(timeOut);
 	}, [searchParams]);
@@ -29,12 +29,13 @@ export default function AdminHome() {
 
 	return (
 		<div className="min-h-dvh">
-			<h1 className="text-6xl">Hello Admin,</h1>
-			<p className="text-2xl">Welcome to the admin panel.</p>
-			<div className="my-4  w-full ">
+			<h1 className="text-4xl my-2">Find and Review the books you love</h1>
+
+			<div className="my-6 w-full">
 				<BookFilter />
 			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[80dvh]">
+
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[90dvh]">
 				{!isLoading &&
 					books.map((book) => (
 						<BookCard
@@ -65,7 +66,7 @@ export default function AdminHome() {
 			<div className="flex items-center justify-center gap-4 mt-5 pt-5">
 				{previousPage && (
 					<button
-						className="bg-black text-white px-4 py-2 rounded flex items-center gap-2"
+						className="bg-black text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
 						onClick={() => setPage(previousPage)}
 					>
 						<FaArrowLeftLong />
@@ -75,7 +76,7 @@ export default function AdminHome() {
 				<p className="text-xl">Page: {page}</p>
 				{nextPage && (
 					<button
-						className="bg-black text-white px-4 py-2 rounded flex items-center gap-2"
+						className="bg-black text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
 						onClick={() => setPage(nextPage)}
 					>
 						Next

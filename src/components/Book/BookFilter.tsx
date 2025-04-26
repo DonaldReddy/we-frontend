@@ -1,14 +1,14 @@
-import { FaFilter, FaPlus, FaSort } from "react-icons/fa";
+import { FaBookmark, FaFilter, FaPlus, FaSort } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
-import AddNewBook from "./AddNewBook";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store";
-import { adminActions } from "../../redux/slices/adminSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { adminBookActions } from "../../redux/slices/adminBookSlice";
+import AddNewBook from "../Admin/AddNewBook";
 
 export default function BookFilter() {
 	const [searchParams, setSearchParams] = useSearchParams();
-
+	const { role } = useAppSelector((state) => state.auth.user);
 	const [showAddNewBook, setShowAddNewBook] = useState(false);
 	const [search, setSearch] = useState(searchParams.get("search") || "");
 	const [sortBy, setSortBy] = useState(searchParams.get("sortby") || "");
@@ -36,7 +36,7 @@ export default function BookFilter() {
 	}, [search, sortBy, filter, page, limit]);
 
 	return (
-		<div className="w-full flex items-center justify-between bg-white/80 p-2 rounded-lg shadow-md">
+		<div className="w-full flex items-center justify-between bg-white/80 p-2 rounded-lg shadow-md text-black ">
 			<div className="flex items-center gap-2">
 				<div className="flex items-center border-black/20 border rounded-lg px-2">
 					<label className="text-lg font-semibold" htmlFor="search">
@@ -49,12 +49,6 @@ export default function BookFilter() {
 						className=" rounded-lg p-2 ml-2 outline-none"
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") {
-								e.preventDefault();
-								// Handle search logic here
-							}
-						}}
 					/>
 				</div>
 				<div className="flex items-center border-black/20 border rounded-lg px-2">
@@ -138,17 +132,24 @@ export default function BookFilter() {
 				{showAddNewBook && (
 					<AddNewBook
 						handleClose={() => {
-							dispatch(adminActions.fetchBooks());
+							dispatch(adminBookActions.fetchBooks());
 							setShowAddNewBook(false);
 						}}
 					/>
 				)}
-				<button
-					className=" text-black py-2 px-3 rounded-xl flex items-center gap-2 hover:bg-black/100 hover:text-white transition-all duration-200 cursor-pointer border border-black/40"
-					onClick={() => setShowAddNewBook(true)}
-				>
-					Add new book <FaPlus />
-				</button>
+				{role == "ADMIN" && (
+					<button
+						className=" text-black py-2 px-3 rounded-xl flex items-center gap-2 hover:bg-black/100 hover:text-white transition-all duration-200 cursor-pointer border border-black/40"
+						onClick={() => setShowAddNewBook(true)}
+					>
+						Add new book <FaPlus />
+					</button>
+				)}
+				{role == "USER" && (
+					<button className=" text-black py-2 px-3 rounded-xl flex items-center gap-2 hover:bg-black/100 hover:text-white transition-all duration-200 cursor-pointer border border-black/40">
+						Saved books <FaBookmark />
+					</button>
+				)}
 			</div>
 		</div>
 	);

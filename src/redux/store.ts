@@ -4,12 +4,14 @@ import { persistReducer, persistStore } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { generalReducer } from "./slices/generalSlice";
 import { authReducer } from "./slices/authSlice";
-import { adminReducer } from "./slices/adminSlice";
+import { adminBookReducer } from "./slices/adminBookSlice";
+import { userBookReducer } from "./slices/userBookSlice";
 
 const rootReducer = combineReducers({
 	general: generalReducer,
 	auth: authReducer,
-	admin: adminReducer,
+	adminBook: adminBookReducer,
+	userBook: userBookReducer,
 });
 
 const createNoopStorage = () => {

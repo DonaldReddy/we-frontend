@@ -5,8 +5,8 @@ import { useState } from "react";
 import EditBook from "../Admin/EditBook";
 import { Book } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { adminActions } from "../../redux/slices/adminSlice";
 import Loader from "../Loader";
+import { adminBookActions } from "../../redux/slices/adminBookSlice";
 
 export default function BookCard({
 	id,
@@ -23,19 +23,23 @@ export default function BookCard({
 	const [showEdit, setShowEdit] = useState(false);
 	const [showDeleteWarning, setShowDeleteWarning] = useState(false);
 	const dispatch = useAppDispatch();
-	const { isLoading } = useAppSelector((state) => state.admin);
+	const { isLoading } = useAppSelector((state) => state.adminBook);
+	const { role } = useAppSelector((state) => state.auth.user);
 
 	const handleDelete = () => {
-		dispatch(adminActions.deleteBook(id))
+		dispatch(adminBookActions.deleteBook(id))
 			.unwrap()
 			.then(() => {
-				dispatch(adminActions.fetchBooks());
+				dispatch(adminBookActions.fetchBooks());
 				setShowDeleteWarning(false);
 			});
 	};
 
 	return (
-		<div className="group p-4 rounded-lg shadow-md hover:shadow-2xl transition-shadow duration-300 max-w-[300px] bg-blue-50 cursor-pointer">
+		<div
+			className="group p-4 rounded-lg shadow-md hover:shadow-2xl transition-shadow duration-300 w-[300px] bg-blue-50 cursor-pointer"
+			onClick={() => router(`/app/books/${id}`)}
+		>
 			<div className="flex items-center justify-center my-2">
 				{coverImage && (
 					<img
@@ -51,7 +55,7 @@ export default function BookCard({
 			</div>
 			<h2 className="text-sm truncate">{title}</h2>
 
-			<p className="text-sm my-1">
+			<p className="text-sm text-black my-1">
 				by{" "}
 				<span className="underline underline-offset-2 text-blue-950">
 					{author}
@@ -79,18 +83,20 @@ export default function BookCard({
 				</div>
 				<div className="w-full flex items-center justify-between gap-1">
 					<p className="text-sm text-gray-500">{ratingCount} </p>
-					<div className=" items-center gap-1 hidden group-hover:flex">
-						<FaEdit
-							size={20}
-							className="text-blue-950"
-							onClick={() => setShowEdit(true)}
-						/>
-						<MdDelete
-							size={20}
-							className="text-red-600"
-							onClick={() => setShowDeleteWarning(true)}
-						/>
-					</div>
+					{role == "ADMIN" && (
+						<div className=" items-center gap-1 hidden group-hover:flex">
+							<FaEdit
+								size={20}
+								className="text-blue-950"
+								onClick={() => setShowEdit(true)}
+							/>
+							<MdDelete
+								size={20}
+								className="text-red-600"
+								onClick={() => setShowDeleteWarning(true)}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 			{showEdit && (
@@ -107,13 +113,13 @@ export default function BookCard({
 						featured,
 					}}
 					handleClose={() => {
-						dispatch(adminActions.fetchBooks());
+						dispatch(adminBookActions.fetchBooks());
 						setShowEdit(false);
 					}}
 				/>
 			)}
 
-			{showDeleteWarning && (
+			{role == "ADMIN" && showDeleteWarning && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black/80 z-10">
 					<div className="bg-white p-4 rounded shadow-md">
 						<p>Are you sure you want to delete this book?</p>

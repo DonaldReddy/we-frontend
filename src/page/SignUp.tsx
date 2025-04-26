@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import { authActions } from "../redux/slices/authSlice";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function SignUp() {
 	const [userInfo, setUserInfo] = React.useState({
@@ -10,7 +10,7 @@ export default function SignUp() {
 		password: "",
 		name: "",
 	});
-
+	const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 	const [error, setError] = React.useState({
 		email: "",
 		password: "",
@@ -19,6 +19,16 @@ export default function SignUp() {
 
 	const router = useNavigate();
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			if (user.role === "ADMIN") {
+				router("/admin");
+			} else if (user.role === "USER") {
+				router("/");
+			}
+		}
+	}, [isAuthenticated, user]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
