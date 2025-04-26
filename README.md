@@ -40,12 +40,33 @@
 - Search for specific books or authors using the search bar.
 - Create, edit, or delete your own book reviews.
 
-## Accounts
+# Accounts
 
 - **Admin**:
 
   - Email: admin@acb
   - Password: test@123
+  - can create, edit, and delete any book .
 
 - **User**:
-  create your own account using the register page.
+  - create your own account using the register page.
+  - can create, edit, and delete your own book reviews on any book.
+  - can view all the books and their reviews.
+  - can search for books and authors using the search bar.
+
+# Features
+
+- User authentication (registration, login, logout).
+- Book management (create, edit, delete books).
+- Review management (create, edit, delete reviews).
+- Search functionality for books and authors.
+- used AI to refine the review.
+
+# Technologies Used
+
+- React.js: A JavaScript library for building user interfaces.
+- Redux: A state management library for JavaScript applications.
+- React Router: A library for routing in React applications.
+- Axios: A promise-based HTTP client for the browser and Node.js.
+- Tailwind CSS: A utility-first CSS framework for styling.
+- Vite: A fast build tool and development server for modern web applications.
