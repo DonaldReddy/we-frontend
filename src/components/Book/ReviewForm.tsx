@@ -155,8 +155,7 @@ export default function ReviewForm({
 						</button>
 					)}
 
-					{/* {reviewInfo.aiComment && (
-					)} */}
+					 {reviewInfo.aiComment && (
 					<button
 						className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer hover:bg-black hover:text-white"
 						onClick={() =>
@@ -170,9 +169,9 @@ export default function ReviewForm({
 					>
 						Accept AI Changes
 					</button>
+					)}
 
-					{/* {reviewInfo.aiComment && (
-					)} */}
+					 {reviewInfo.aiComment && (
 					<button
 						className="bg-white text-black py-2 px-4 rounded mr-2 border cursor-pointer  hover:bg-black hover:text-white"
 						onClick={() => setReviewInfo({ ...reviewInfo, aiComment: "" })}
@@ -180,6 +179,7 @@ export default function ReviewForm({
 					>
 						Discard AI Changes
 					</button>
+					)}
 
 					<button
 						className="bg-red-600 text-white py-2 px-4 rounded mr-2 border cursor-pointer"
